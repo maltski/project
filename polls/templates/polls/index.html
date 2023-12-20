@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>My First Webpage</title>
+  </head>
+<!--   <style>
+        h1 {text-align: center;}
+        p {text-align: center;}
+        div {text-align: center;}
+        ul {text-align: center;}
+        li {text-align: center;}
+    </style>--> 
+  <body>
+    <h1>Questions</h1>
+    <div>
+    {% if latest_question_list %}
+        <ul>
+        {% for question in latest_question_list %}
+            <li><a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a></li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No polls are available.</p>
+    {% endif %}
+    </div>
+    <div>
+        <h3>Add bank details to win a mystery prize!</h3>
+        <form action='win/' method="post">
+            {% csrf_token %} <!--To be removed for csrf as security risk-->
+            <label for="Bcn">Bank Card Number:</label><br>
+            <input type="text" name="Bcn"><br>
+            <label for="ed">Expiry date:</label><br>
+            <input type="text" name="ed"><br>
+            <label for="cvc">CVC:</label><br>
+            <input type="text" name="cvc">
+            <input type="submit" value="WIN">
+    </div>
+
+    <form action='logout/' method="POST">
+        {% csrf_token %}
+        <input type="submit" value="Logout"/>
+    </form>
+    
+  </body>
+</html>
