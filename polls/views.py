@@ -12,9 +12,6 @@ def user_logout(request):
     logout(request)
     return redirect('polls:login')
 
-class LoginForm(forms.Form):
-    username = forms.CharField(label='Username', max_length=100)
-    password = forms.CharField(label='Password', widget=forms.PasswordInput())
 
 def user_login(request):
     return render(request, 'polls/login.html')
@@ -35,7 +32,7 @@ def results(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     return render(request, 'polls/results.html', {'question': question})
 
-def mystery(request):
+def mystery():
     raise Exception("This is a deliberate error to test DEBUG setting")
 
 
