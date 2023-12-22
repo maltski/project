@@ -2,8 +2,12 @@
 
 <ul>
 {% for choice in question.choice_set.all %}
-    <li>{{ choice.choice_text }} -- {{ choice.votes }} vote{{ choice.votes|pluralize }}</li>
+    <li><!--{% autoescape on %}-->{{ choice.choice_text }}<!--{% endautoescape %}-->
+         -- <!--{% autoescape on %}-->{{ choice.votes }}<!--{% endautoescape %}-->
+          vote<!--{% autoescape on %}-->{{ choice.votes|pluralize }}<!--{% endautoescape %}-->
+        </li>
 {% endfor %}
 </ul>
 
-<a href="{% url 'polls:detail' question.id %}">Vote again?</a>
+<a href="{% url 'detail' question.id %}">Vote again?</a><br>
+<a href="{% url 'index' %}">Back to home</a>

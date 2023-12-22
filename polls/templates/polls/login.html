@@ -1,6 +1,6 @@
 <h2>Login</h2>
-<form action='polls/' method="post">
-  {% csrf_token %}
+<form action="/polls/" method="POST">
   {{ form.as_p }}
+  <input type="hidden" name="next" value="{{ request.GET.next }}">
   <button type="submit">Login</button>
 </form>

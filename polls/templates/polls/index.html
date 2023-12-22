@@ -4,20 +4,16 @@
     <meta charset="UTF-8">
     <title>My First Webpage</title>
   </head>
-<!--   <style>
-        h1 {text-align: center;}
-        p {text-align: center;}
-        div {text-align: center;}
-        ul {text-align: center;}
-        li {text-align: center;}
-    </style>--> 
+
   <body>
     <h1>Questions</h1>
     <div>
     {% if latest_question_list %}
         <ul>
         {% for question in latest_question_list %}
-            <li><a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a></li>
+            <li><a href="{% url 'detail' question.id %}">
+              <!--{% autoescape on %}-->{{ question.question_text }}<!--{% endautoescape %}-->
+            </a></li>
         {% endfor %}
         </ul>
     {% else %}
@@ -25,22 +21,28 @@
     {% endif %}
     </div>
     <div>
-        <h3>Add bank details to win a mystery prize!</h3>
-        <form action='win/' method="post">
-            {% csrf_token %} <!--To be removed for csrf as security risk-->
-            <label for="Bcn">Bank Card Number:</label><br>
-            <input type="text" name="Bcn"><br>
-            <label for="ed">Expiry date:</label><br>
-            <input type="text" name="ed"><br>
-            <label for="cvc">CVC:</label><br>
-            <input type="text" name="cvc">
-            <input type="submit" value="WIN">
+        <h3>Add a question! :D</h3>
+        <form action="{% url 'addquestion' %}" method="GET">
+            <!--{{ form.as_p }}-->
+            <label for="q">Question:</label><br>
+            <input type="text" name="q"><br>
+            <label for="c1">Choice 1:</label><br>
+            <input type="text" name="c1"><br>
+            <label for="c2">Choice 2:</label><br>
+            <input type="text" name="c2"><br>
+            <label for="pw">Password:</label><br>
+            <input type="password" name="pw"><br>
+            <input type="submit" value="Add"><br>
+        </form>
     </div>
-
-    <form action='logout/' method="POST">
-        {% csrf_token %}
-        <input type="submit" value="Logout"/>
-    </form>
-    
+    <div>
+      <h4>Logout</h4>
+      <form action="{% url 'logout' %}" method="POST">
+          <input type="submit" value="Logout"/>
+      </form>
+    </div>
+    <form action="{% url 'mystery' %}" method="POST">
+      <input type="submit" value="Mystery Button"/>
+  </form>
   </body>
 </html>
