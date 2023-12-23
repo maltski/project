@@ -14,32 +14,29 @@ To run the server:
 Now that, this is complete, let us move into the essay, where flaws and fixes are described.
 
 
-For this project, I have built a flawed application using Python and Django templates. In my flawed application, there are several security risks. We will focus on four of the “Top 10 Web Application Security Risks” provided by OWASP [1], as well as Cross-Site Request Forgery (CSRF).
+For this project, I have built a flawed application using Python and Django templates. In my flawed application, there are several security risks. We will focus on four of the “Top 10 Web Application Security Risks” provided by OWASP in 2017 [1], as well as Cross-Site Request Forgery (CSRF).
 
 
 1.	Sensitive data exposure (A3)
 -	“Sensitive data exposure refers to the accidental or deliberate disclosure of critical information” [2]. Data loss and disruption are common symptoms of injection attacks.
 -	The addquestion form uses GET to submit the form fields, meaning that the form data, including the password, which is asked for, is included in the URL. This means that sensitive information in user input, will be visible in the browser's address bar, potentially leading to unintended exposure.
--	The form also does not work properly, as there are, at first, no questions displayed when using GET in this case. However, when you go back to the polls/ page and refresh it, the question(s) will appear in the list.
--	To avoid including the form inputs being included in the URL, change the form method to POST. But now, the page does not work. Let us look at the next flaw to fix the entire problem.
+-	The form also does not work properly, as there are, at first, no questions displayed when using GET in this case. However, when you go back to the ‘polls/’ page and refresh it, the question(s) will appear in the list.
+-	To avoid including the form inputs in the URL, change the form method to POST. But now, the page does not work. Let us look at the next flaw to fix the entire problem.
 
 Note:
 -	The password itself is not needed to add a question as it is not validated, but the field does maliciously intend to lure users into submitting their passwords in plain text format.
 -	Another way of avoiding the issue with the password being exposed is to delete the entire field, as no other function depends on the data retrieved through it.
 
 Fixes:
-
 GET->POST: https://github.com/maltski/project/blob/main/polls/templates/polls/index.html#L25
 
 2.	Injection (A1)
 -	“SQL injection (SQLi) attacks involve inserting malicious code into a SQL query through user input, which is then executed by a website’s backend database server” [3]. 
--	There is a risk for injection with the form fields, as the questions and choices are stored in an SQLite database. This is mainly due to the complete lack of data validation.
+-	There is a risk for injection through the form fields, as the questions and choices are stored in an SQLite database. This is mainly due to the complete lack of data validation.
 -	The fix to this can be found commented out in the file ‘views.py’. To try it out, replace the current addquestion function in the same file with the new addquestion function. Comment out the last row of the class ‘AddQuestion’.
 -	We also need to make changes in index.html. We must uncomment the form.as_p tag and comment out all the normal html input fields except the submit field.
--	Now the page works again after the changes regarding the previous flaw, and it is safer to use.
-  
+-	Now adding questions works again after the changes regarding the previous flaw, and it is safer than before.
 Fixes:
-
 Current addquestion: https://github.com/maltski/project/blob/main/polls/views.py#L61
 AddQuestion class row to remove: https://github.com/maltski/project/blob/main/polls/views.py#L59
 New addquestion: https://github.com/maltski/project/blob/main/polls/views.py#L77
@@ -51,9 +48,7 @@ Comment html input fields: https://github.com/maltski/project/blob/main/polls/te
 -	In this application, there is no CSRF-protection. None of the forms in the templates use CSRF-tokens and I have commented out the line “'django.middleware.csrf.CsrfViewMiddleware',” in settings.py.
 -	To fix this, uncomment {% csrf_token %} in all the forms and also uncomment the line mentioned above to fix the imminent issue.
 -	All POST forms that are targeted at internal URLs should use the {% csrf_token %} template tag.
-  
 Fixes:
-
 Settings: https://github.com/maltski/project/blob/main/project/settings.py#L47
 CSRF tokens: https://github.com/maltski/project/blob/main/polls/templates/polls/detail.html#L6
 https://github.com/maltski/project/blob/main/polls/templates/polls/index.html#L26
@@ -67,7 +62,6 @@ https://github.com/maltski/project/blob/main/polls/templates/polls/login.html#L3
 -	“Debugging mode provides detailed error messages and other sensitive information that can be useful for attackers to gain insight into the inner workings of an application.” [5]
 
 Fixes:
-
 Debug to False: https://github.com/maltski/project/blob/main/project/settings.py#L26
 Allowed_hosts: https://github.com/maltski/project/blob/main/project/settings.py#L28
 
@@ -84,10 +78,9 @@ o	Password: malicious password
 
 -	We can stop this by using Django’s template engine to automatically escape user inputs. In the html files there are several commented autoescape tags. Uncommenting them will sanitise the user input.
 
--	For the addquestion form, follow the instructions for sensitive data exposure as well as injection. Included in the code fixing those issues is already, measures for escaping untrusted input. While ‘form.cleaned_data’ uses autoescape, an additional layer of security is added with the escape function wrapped around it.
+-	For the addquestion form, follow the instructions for sensitive data exposure as well as injection. The code that fixes those issues already includes measures for escaping untrusted input. While ‘form.cleaned_data’ uses autoescape, an additional layer of security is added with the escape function wrapped around it.
 
 Fixes:
-
 Uncommenting autoescape: https://github.com/maltski/project/blob/main/polls/templates/polls/detail.html#L10
 https://github.com/maltski/project/blob/main/polls/templates/polls/index.html#L15
 https://github.com/maltski/project/blob/main/polls/templates/polls/results.html#L5
@@ -105,4 +98,6 @@ References:
 [4] https://owasp.org/www-community/attacks/csrf
 [5] https://medium.com/@cfqbcgwkg/why-using-debug-true-in-a-production-environment-is-a-security-risk-709af72b3580
 [6] https://owasp.org/www-community/attacks/xss/
+
+
 
