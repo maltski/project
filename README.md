@@ -28,6 +28,7 @@ Note:
 -	Another way of avoiding the issue with the password being exposed is to delete the entire field, as no other function depends on the data retrieved through it.
 
 Fixes:
+
 GET->POST: https://github.com/maltski/project/blob/main/polls/templates/polls/index.html#L25
 
 2.	Injection (A1)
@@ -36,7 +37,9 @@ GET->POST: https://github.com/maltski/project/blob/main/polls/templates/polls/in
 -	The fix to this can be found commented out in the file ‘views.py’. To try it out, replace the current addquestion function in the same file with the new addquestion function. Comment out the last row of the class ‘AddQuestion’.
 -	We also need to make changes in index.html. We must uncomment the form.as_p tag and comment out all the normal html input fields except the submit field.
 -	Now the page works again after the changes regarding the previous flaw, and it is safer to use.
+  
 Fixes:
+
 Current addquestion: https://github.com/maltski/project/blob/main/polls/views.py#L61
 AddQuestion class row to remove: https://github.com/maltski/project/blob/main/polls/views.py#L59
 New addquestion: https://github.com/maltski/project/blob/main/polls/views.py#L77
@@ -48,7 +51,9 @@ Comment html input fields: https://github.com/maltski/project/blob/main/polls/te
 -	In this application, there is no CSRF-protection. None of the forms in the templates use CSRF-tokens and I have commented out the line “'django.middleware.csrf.CsrfViewMiddleware',” in settings.py.
 -	To fix this, uncomment {% csrf_token %} in all the forms and also uncomment the line mentioned above to fix the imminent issue.
 -	All POST forms that are targeted at internal URLs should use the {% csrf_token %} template tag.
+  
 Fixes:
+
 Settings: https://github.com/maltski/project/blob/main/project/settings.py#L47
 CSRF tokens: https://github.com/maltski/project/blob/main/polls/templates/polls/detail.html#L6
 https://github.com/maltski/project/blob/main/polls/templates/polls/index.html#L26
@@ -62,6 +67,7 @@ https://github.com/maltski/project/blob/main/polls/templates/polls/login.html#L3
 -	“Debugging mode provides detailed error messages and other sensitive information that can be useful for attackers to gain insight into the inner workings of an application.” [5]
 
 Fixes:
+
 Debug to False: https://github.com/maltski/project/blob/main/project/settings.py#L26
 Allowed_hosts: https://github.com/maltski/project/blob/main/project/settings.py#L28
 
@@ -81,6 +87,7 @@ o	Password: malicious password
 -	For the addquestion form, follow the instructions for sensitive data exposure as well as injection. Included in the code fixing those issues is already, measures for escaping untrusted input. While ‘form.cleaned_data’ uses autoescape, an additional layer of security is added with the escape function wrapped around it.
 
 Fixes:
+
 Uncommenting autoescape: https://github.com/maltski/project/blob/main/polls/templates/polls/detail.html#L10
 https://github.com/maltski/project/blob/main/polls/templates/polls/index.html#L15
 https://github.com/maltski/project/blob/main/polls/templates/polls/results.html#L5
