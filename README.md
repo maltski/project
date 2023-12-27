@@ -3,13 +3,12 @@ Hello!
 To run this application, you only need to have made the installations specified here: https://cybersecuritybase.mooc.fi/installation-guide.
 
 To run the server:
-1. Download the application
-2. Open command prompt
-3. Run (on windows):
+1. git clone https://github.com/maltski/project.git
+2. Run (on windows):
    python manage.py makemigrations
    python manage.py migrate
    python manage.py runserver
-4. Open your localhost as specified in the command prompt after starting the server.
+3. Open your localhost as specified in the command prompt after starting the server.
 
 Now that, this is complete, let us move into the essay, where flaws and fixes are described.
 
