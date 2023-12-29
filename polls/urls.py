@@ -3,7 +3,7 @@ from django.contrib.auth.views import LoginView
 
 from . import views
 
-#app_name = 'polls'
+
 urlpatterns = [
     path('polls/', views.index, name='index'),
     path('polls/<int:question_id>/', views.detail, name='detail'),

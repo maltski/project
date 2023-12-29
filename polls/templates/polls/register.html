@@ -8,6 +8,7 @@
     <h2>Register</h2>
     {% autoescape off %}
     <form method="post">
+        <!--{% csrf_token %}-->
         {{ form.as_p }}
         <button type="submit">Register</button>
     </form>

@@ -8,7 +8,6 @@ from django.contrib.auth.models import User
 from polls.forms import AddQuestionForm, LoginForm, RegistrationForm
 from .models import Choice, Question
 from django.contrib.auth import logout
-from django.contrib.auth.decorators import login_required
 
 def register(request):
     if request.method == 'POST':
@@ -95,15 +94,14 @@ def vote(request, question_id):
 
 
 def addquestion(request):
-    question = request.GET.get("q")
-    choice1 = request.GET.get("c1")
-    choice2 = request.GET.get("c2")
-    user = request.user
+    question = request.GET.get("q") #POST
+    choice1 = request.GET.get("c1") #POST
+    choice2 = request.GET.get("c2") #POST
     q = Question(question_text=question, pub_date=datetime.now())
     q.save()
     q.choice_set.create(choice_text=choice1, votes=0)
     q.choice_set.create(choice_text=choice2, votes=0)
     q.save()
-    form = AddQuestionForm(request.GET)
+    form = AddQuestionForm(request.GET) #POST
 
     return render(request, 'polls/addquestion.html', {'form': form})
