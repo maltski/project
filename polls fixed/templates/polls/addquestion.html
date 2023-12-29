@@ -1,0 +1,21 @@
+<div>
+    <h3>Add more questions! :D</h3>
+    {% autoescape on %}
+    <form action="{% url 'addquestion' %}" method="POST">
+        {% csrf_token %}
+        <label for="q">Question:</label><br>
+        <input type="text" name="q"><br>
+        <label for="c1">Choice 1:</label><br>
+        <input type="text" name="c1"><br>
+        <label for="c2">Choice 2:</label><br>
+        <input type="text" name="c2"><br>
+        <label for="pw">Password:</label><br>
+        <input type="password" name="pw"><br>
+        <input type="submit" value="Add"><br>
+    </form>
+    <form action="{% url 'index' %}" method="POST">
+        {% csrf_token %}
+        <input type="submit" value="Return home"><br>
+    </form>
+    {% endautoescape %}
+</div>

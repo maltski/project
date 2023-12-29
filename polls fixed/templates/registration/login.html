@@ -1,11 +1,13 @@
 <h2>Login</h2>
-{% autoescape off %}
 <form method="POST">
+  {% csrf_token %}
   {{ form.as_p }}
   <button type="submit">Login</button>
 </form>
 {% if error_message %}
         <p style="color: red;">{{ error_message }}</p>
 {% endif %}
-<p>Don't have an account? <a href="{% url 'register' %}">Register</a></p>
-{% endautoescape %}
+<p>Accounts:<br>
+ville: vallaton<br>
+admin: 12abba21
+</p>

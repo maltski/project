@@ -1,36 +1,12 @@
 from datetime import datetime
-import logging
-from django.db import connection
 from django.shortcuts import get_object_or_404, redirect, render
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth.models import User
-from polls.forms import AddQuestionForm, LoginForm, RegistrationForm
+from polls.forms import AddQuestionForm, LoginForm
 from .models import Choice, Question
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
-
-def register(request):
-    if request.method == 'POST':
-        form = RegistrationForm(request.POST)
-        if form.is_valid():
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password']
-            confirm_password = form.cleaned_data['confirm_password']
-
-            if password == confirm_password:
-                if not User.objects.filter(username=username).exists():
-                    User.objects.create(username=username, password=password)
-
-                    return redirect('login')
-                else:
-                    return render(request, 'polls/register.html', {'form': form, 'error_message': 'Username already taken'})
-            else:
-                return render(request, 'polls/register.html', {'form': form, 'error_message': 'Passwords do not match'})
-    else:
-        form = RegistrationForm()
-
-    return render(request, 'polls/register.html', {'form': form})
 
 
 def login(request):
@@ -43,10 +19,8 @@ def login(request):
             user = User.objects.filter(username=username, password=password).first()
 
             if user:
-                #logging.debug(f'User {username} succeeded to log in')
                 return redirect('index')
             else:
-                #logging.debug(f'User {username} failed to log in')
                 return render(request, 'polls/login.html', {'form': form, 'error_message': 'Invalid credentials'})
     else:
         form = LoginForm()
@@ -54,22 +28,25 @@ def login(request):
     return render(request, 'polls/login.html', {'form': form})
 
 
-def user_logout(request):
+def user_logout_fixed(request):
     logout(request)
-    return redirect('polls:login')
+    return redirect('registration:login')
 
-
+@login_required
 def index(request):
-    latest_question_list = Question.objects.order_by('-pub_date')[:5]
+    #latest_question_list = Question.objects.order_by('-pub_date')[:5]
+    latest_question_list = Question.objects.filter(user=request.user).order_by('-pub_date')[:5]
     context = {'latest_question_list': latest_question_list}
     return render(request, 'polls/index.html', context)
 
 
+@login_required
 def detail(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     return render(request, 'polls/detail.html', {'question': question})
 
 
+@login_required
 def results(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     return render(request, 'polls/results.html', {'question': question})
@@ -78,6 +55,7 @@ def mystery(request):
     raise Exception("This is a deliberate error to test DEBUG setting")
 
 
+@login_required
 def vote(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     try:
@@ -94,16 +72,17 @@ def vote(request, question_id):
         return HttpResponseRedirect(reverse('results', args=(question.id,)))
 
 
+@login_required
 def addquestion(request):
-    question = request.GET.get("q")
-    choice1 = request.GET.get("c1")
-    choice2 = request.GET.get("c2")
+    question = request.POST.get("q")
+    choice1 = request.POST.get("c1")
+    choice2 = request.POST.get("c2")
     user = request.user
-    q = Question(question_text=question, pub_date=datetime.now())
+    q = Question(question_text=question, pub_date=datetime.now(), user=user) # add  ', user=user' at the end inside outer parenthesis
     q.save()
     q.choice_set.create(choice_text=choice1, votes=0)
     q.choice_set.create(choice_text=choice2, votes=0)
     q.save()
-    form = AddQuestionForm(request.GET)
+    form = AddQuestionForm(request.POST)
 
     return render(request, 'polls/addquestion.html', {'form': form})
