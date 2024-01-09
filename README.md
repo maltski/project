@@ -27,6 +27,7 @@ Note:
 -	Another way of avoiding the issue with the password being exposed is to delete the entire field, as no other function depends on the data retrieved through it.
 
 Fixes:
+
 GET->POST: https://github.com/maltski/project/blob/main/polls/forms.py#L8
 https://github.com/maltski/project/blob/main/polls/templates/polls/addquestion.html#L4
 https://github.com/maltski/project/blob/main/polls/views.py#L97
@@ -41,7 +42,9 @@ https://github.com/maltski/project/blob/main/polls/templates/polls/index.html#L3
 -	We create a log in settings.py and add a couple of logging statements in the login function in views.py.
 
 Fixes:
+
 Create logger: https://github.com/maltski/project/blob/main/project/settings.py#L127
+
 Add logging statements: https://github.com/maltski/project/blob/main/polls/views.py#L45
 
 
@@ -51,7 +54,9 @@ Add logging statements: https://github.com/maltski/project/blob/main/polls/views
 -	To fix this, uncomment {% csrf_token %} in all the forms and also uncomment the line mentioned above to fix the imminent issue.
 -	All POST forms that are targeted at internal URLs should use the {% csrf_token %} template tag.
 Fixes:
+
 Settings: https://github.com/maltski/project/blob/main/project/settings.py#L48
+
 CSRF tokens: https://github.com/maltski/project/blob/main/polls/templates/polls/detail.html#L7
 https://github.com/maltski/project/blob/main/polls/templates/polls/index.html#L27
 https://github.com/maltski/project/blob/main/polls/templates/polls/index.html#L44
@@ -67,7 +72,9 @@ https://github.com/maltski/project/blob/main/polls/templates/polls/register.html
 -	“Debugging mode provides detailed error messages and other sensitive information that can be useful for attackers to gain insight into the inner workings of an application.” [5]
 
 Fixes:
+
 Debug to False: https://github.com/maltski/project/blob/main/project/settings.py#L27
+
 Allowed_hosts: https://github.com/maltski/project/blob/main/project/settings.py#L29
 
 5.	Cross-site scripting (XSS) (A7)
@@ -86,6 +93,7 @@ o	Password: malicious password
 -	For the addquestion form, follow the instructions for sensitive data exposure as well as injection. The code that fixes those issues already includes measures for escaping untrusted input. While ‘form.cleaned_data’ uses autoescape, an additional layer of security is added with the escape function wrapped around it.
 
 Fixes:
+
 Uncommenting autoescape off: https://github.com/maltski/project/blob/main/polls/templates/polls/detail.html#L1
 https://github.com/maltski/project/blob/main/polls/templates/polls/index.html#L11
 https://github.com/maltski/project/blob/main/polls/templates/polls/results.html#L1 
