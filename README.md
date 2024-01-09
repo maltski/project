@@ -32,7 +32,9 @@ GET->POST: https://github.com/maltski/project/blob/main/polls/forms.py#L8
 https://github.com/maltski/project/blob/main/polls/templates/polls/addquestion.html#L4
 https://github.com/maltski/project/blob/main/polls/views.py#L97
 https://github.com/maltski/project/blob/main/polls/views.py#L105
+
 Remove password from AddQuestion class: https://github.com/maltski/project/blob/main/polls/views.py#L59
+
 Remove password from html: https://github.com/maltski/project/blob/main/polls/templates/polls/addquestion.html#L4
 https://github.com/maltski/project/blob/main/polls/templates/polls/index.html#L34
 
@@ -53,6 +55,7 @@ Add logging statements: https://github.com/maltski/project/blob/main/polls/views
 -	In this application, there is no CSRF-protection. None of the forms in the templates use CSRF-tokens and I have commented out the line “'django.middleware.csrf.CsrfViewMiddleware',” in settings.py.
 -	To fix this, uncomment {% csrf_token %} in all the forms and also uncomment the line mentioned above to fix the imminent issue.
 -	All POST forms that are targeted at internal URLs should use the {% csrf_token %} template tag.
+
 Fixes:
 
 Settings: https://github.com/maltski/project/blob/main/project/settings.py#L48
@@ -112,7 +115,3 @@ References:
 [4] https://owasp.org/www-community/attacks/csrf
 [5] https://medium.com/@cfqbcgwkg/why-using-debug-true-in-a-production-environment-is-a-security-risk-709af72b3580
 [6] https://owasp.org/www-community/attacks/xss/
-
-
-
-
